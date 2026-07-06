@@ -7,229 +7,359 @@
 <meta name="description" content="从播客和访谈里逐句核对出来的书单：谁提的、为什么值得读、读到哪了。">
 <style>
   :root{
-    --paper:#faf7f1; --ink:#1a1713; --ink2:#5c554b; --line:#e4ddd0;
-    --red:#b3352b; --gold:#a07d2a; --green:#3d6b4f; --card:#fffdf9;
+    --ink:#222222; --gray:#717171; --line:#ebebeb; --bg:#ffffff;
+    --brand:#FF385C; --green:#008a05; --gold:#c58a00;
+    --shadow:0 6px 16px rgba(0,0,0,.12);
+    --radius:14px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--paper);color:var(--ink);
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    line-height:1.75;-webkit-font-smoothing:antialiased}
-  .serif{font-family:"Songti SC","STSong","Noto Serif SC",Georgia,serif}
-  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+    line-height:1.6;-webkit-font-smoothing:antialiased}
+  .serif{font-family:"Songti SC","STSong",Georgia,serif}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 
-  /* ── masthead ── */
-  header{border-bottom:3px double var(--ink);padding:34px 0 22px;text-align:center}
-  .kicker{font-size:11px;letter-spacing:.35em;color:var(--red);text-transform:uppercase;font-weight:600}
-  h1{font-size:clamp(30px,7vw,44px);font-weight:900;letter-spacing:.02em;margin:8px 0 6px}
-  h1 .en{display:block;font-size:13px;letter-spacing:.3em;color:var(--ink2);font-weight:400;margin-top:6px;text-transform:uppercase}
-  .dateline{font-size:12px;color:var(--ink2);margin-top:10px}
-  .dateline b{color:var(--red)}
+  /* ── top bar ── */
+  .topbar{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);z-index:50}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-weight:800;font-size:18px;color:var(--brand);display:flex;align-items:center;gap:8px}
+  .logo span{color:var(--ink)}
+  .top-note{font-size:12.5px;color:var(--gray)}
 
-  /* ── intro ── */
-  .intro{padding:22px 0 4px;font-size:15px;color:var(--ink2)}
-  .intro em{font-style:normal;border-bottom:2px solid var(--gold);color:var(--ink)}
+  /* ── hero ── */
+  .hero{padding:40px 0 8px}
+  .hero h1{font-size:clamp(26px,4.5vw,34px);font-weight:800;letter-spacing:-.01em}
+  .hero p{color:var(--gray);font-size:15px;margin-top:8px;max-width:640px}
+  .hero p em{font-style:normal;color:var(--ink);font-weight:600}
 
-  /* ── section head ── */
-  section{padding:26px 0 8px}
-  .sec-head{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:18px}
-  .sec-head h2{font-size:22px;font-weight:900;letter-spacing:.05em}
-  .sec-head span{font-size:11px;letter-spacing:.25em;color:var(--ink2);text-transform:uppercase}
+  /* ── section ── */
+  section{padding:28px 0 6px}
+  .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+  .sec-head h2{font-size:22px;font-weight:800;letter-spacing:-.01em}
+  .sec-head .sub{font-size:13px;color:var(--gray);margin-top:2px}
+  .arrows{display:flex;gap:8px}
+  .arrow{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;
+    cursor:pointer;font-size:15px;color:var(--ink);display:flex;align-items:center;justify-content:center;
+    transition:.15s;user-select:none}
+  .arrow:hover{box-shadow:var(--shadow);transform:scale(1.05)}
+  @media(max-width:740px){.arrows{display:none}}
 
-  /* ── filter tabs ── */
-  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-  .tab{font-size:13px;padding:5px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);
-    cursor:pointer;color:var(--ink2);user-select:none;transition:.15s}
-  .tab.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .tab b{font-weight:700}
+  /* ── filter pills ── */
+  .pills{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
+  .pill{font-size:13px;padding:7px 16px;border:1px solid var(--line);border-radius:999px;background:#fff;
+    cursor:pointer;color:var(--ink);user-select:none;transition:.15s;font-weight:500}
+  .pill:hover{border-color:var(--ink)}
+  .pill.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .pill b{font-weight:700;opacity:.7;margin-left:3px}
+
+  /* ── scroll row ── */
+  .row{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding:6px 2px 26px;scrollbar-width:none}
+  .row::-webkit-scrollbar{display:none}
 
   /* ── book card ── */
-  .book{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 18px 14px;margin-bottom:14px;
-    position:relative;transition:.15s}
-  .book.dim{opacity:.35}
-  .b-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-  .b-title{font-size:18px;font-weight:800;line-height:1.4}
-  .b-title .en{font-size:12px;color:var(--ink2);font-weight:400;margin-left:6px;white-space:nowrap}
-  .stars{color:var(--gold);font-size:12px;letter-spacing:2px;white-space:nowrap;padding-top:4px}
-  .b-author{font-size:13px;color:var(--ink2);margin:2px 0 8px}
-  .b-blurb{font-size:14px;color:var(--ink);margin-bottom:10px}
-  .b-blurb .warn{color:var(--red);font-size:13px}
-  .b-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
-    border-top:1px dashed var(--line);padding-top:10px}
-  .src{font-size:12px;color:var(--ink2)}
-  .src b{color:var(--ink);font-weight:600}
-  .status{font-size:12px;font-weight:700;padding:4px 14px;border-radius:999px;cursor:pointer;user-select:none;
-    border:1.5px solid;transition:.15s;white-space:nowrap}
-  .st-0{color:var(--ink2);border-color:var(--line);background:transparent}
-  .st-1{color:#fff;border-color:var(--red);background:var(--red)}
-  .st-2{color:#fff;border-color:var(--green);background:var(--green)}
-  .hint{font-size:11px;color:var(--ink2);text-align:right;margin:-6px 0 14px;opacity:.7}
+  .bcard{flex:0 0 172px;min-width:0;width:172px;scroll-snap-align:start;cursor:pointer;transition:.18s;position:relative}
+  .bcard:hover{transform:translateY(-3px)}
+  .bcard.dim{opacity:.3}
+  .cover{aspect-ratio:2/3;border-radius:12px;overflow:hidden;position:relative;
+    box-shadow:0 2px 10px rgba(0,0,0,.14);display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;padding:16px 14px;transition:.18s}
+  .bcard:hover .cover{box-shadow:var(--shadow)}
+  .cover .frame{position:absolute;inset:9px;border:1px solid rgba(255,255,255,.35);border-radius:7px;pointer-events:none}
+  .cover .ct{font-size:19px;font-weight:800;line-height:1.35;letter-spacing:.04em}
+  .cover .cen{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-top:8px}
+  .cover .ca{position:absolute;bottom:14px;left:0;right:0;font-size:10px;opacity:.85;letter-spacing:.05em}
+  .cover .orn{font-size:11px;opacity:.6;margin-bottom:10px;letter-spacing:.3em}
+  .badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;padding:3px 10px;
+    border-radius:999px;background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.18);z-index:2}
+  .badge.b1{background:var(--brand);color:#fff}
+  .badge.b2{background:var(--green);color:#fff}
+  .binfo{padding:10px 2px 0}
+  .binfo .t{font-size:14.5px;font-weight:700;line-height:1.4;display:flex;justify-content:space-between;gap:6px}
+  .binfo .t .pri{color:var(--ink);font-size:12px;white-space:nowrap;font-weight:600}
+  .binfo .a{font-size:12.5px;color:var(--gray);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .binfo .s{font-size:12px;color:var(--gray);margin-top:1px}
 
   /* ── podcast card ── */
-  .pod{border-left:3px solid var(--red);background:var(--card);border-top:1px solid var(--line);
-    border-right:1px solid var(--line);border-bottom:1px solid var(--line);
-    border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:16px}
-  .p-name{font-size:17px;font-weight:800}
-  .p-name a{color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--gold)}
-  .p-who{font-size:12.5px;color:var(--ink2);margin:3px 0 8px}
-  .p-why{font-size:14px;margin-bottom:8px}
-  .p-eps{font-size:13px;color:var(--ink2);margin-bottom:8px}
-  .p-eps b{color:var(--ink)}
-  .chips{display:flex;gap:6px;flex-wrap:wrap}
-  .chip{font-size:11.5px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--ink2)}
-  .chip.bk{border-color:var(--gold);color:var(--gold)}
-  .quote{font-size:13.5px;color:var(--ink2);border-left:2px solid var(--gold);padding-left:10px;margin-top:8px;font-style:italic}
+  .pcard{flex:0 0 320px;min-width:0;width:320px;scroll-snap-align:start;cursor:pointer;transition:.18s}
+  .pcard:hover{transform:translateY(-3px)}
+  .ptile{aspect-ratio:16/9;border-radius:var(--radius);position:relative;overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,.12);display:flex;align-items:flex-end;padding:16px;transition:.18s}
+  .pcard:hover .ptile{box-shadow:var(--shadow)}
+  .ptile .big{position:absolute;right:-6px;top:-18px;font-size:110px;font-weight:900;opacity:.14;
+    font-family:"Songti SC","STSong",Georgia,serif;line-height:1;pointer-events:none;color:#fff}
+  .ptile .pn{color:#fff;font-weight:800;font-size:17px;line-height:1.35;text-shadow:0 1px 6px rgba(0,0,0,.25);position:relative}
+  .ptag{position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;background:rgba(255,255,255,.92);
+    color:var(--ink);padding:3px 10px;border-radius:999px}
+  .pinfo{padding:12px 2px 0}
+  .pinfo .w{font-size:12.5px;color:var(--gray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pinfo .d{font-size:13.5px;color:var(--ink);margin-top:4px;display:-webkit-box;
+    -webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chip{font-size:11px;background:#f7f7f7;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--gray)}
 
-  footer{border-top:3px double var(--ink);margin-top:40px;padding:20px 0 46px;text-align:center;
-    font-size:12px;color:var(--ink2)}
-  footer a{color:var(--red);text-decoration:none}
-  @media(max-width:480px){ .b-top{flex-direction:column;gap:2px} }
+  /* ── modal ── */
+  .ovl{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;
+    align-items:flex-end;justify-content:center}
+  .ovl.show{display:flex}
+  @media(min-width:640px){.ovl.show{align-items:center}}
+  .sheet{background:#fff;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;
+    border-radius:20px 20px 0 0;padding:26px 26px 30px;position:relative;animation:up .22s ease}
+  @media(min-width:640px){.sheet{border-radius:20px}}
+  @keyframes up{from{transform:translateY(28px);opacity:.6}to{transform:none;opacity:1}}
+  .x{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;border:none;
+    background:#f2f2f2;font-size:15px;cursor:pointer;color:var(--ink)}
+  .m-kick{font-size:11.5px;letter-spacing:.12em;color:var(--brand);font-weight:700;text-transform:uppercase}
+  .m-title{font-size:22px;font-weight:800;margin:6px 0 2px;line-height:1.35}
+  .m-sub{font-size:13.5px;color:var(--gray);margin-bottom:14px}
+  .m-body{font-size:14.5px;color:var(--ink)}
+  .m-body .warn{color:var(--brand);font-size:13.5px}
+  .m-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    border-top:1px solid var(--line);margin-top:16px;padding-top:14px}
+  .m-src{font-size:13px;color:var(--gray)}
+  .m-src b{color:var(--ink)}
+  .stbtn{font-size:13.5px;font-weight:700;padding:9px 22px;border-radius:10px;cursor:pointer;border:1.5px solid var(--ink);
+    background:#fff;color:var(--ink);transition:.15s}
+  .stbtn.s1{background:var(--brand);border-color:var(--brand);color:#fff}
+  .stbtn.s2{background:var(--green);border-color:var(--green);color:#fff}
+  .gobtn{display:inline-block;margin-top:16px;font-size:14px;font-weight:700;padding:11px 24px;border-radius:10px;
+    background:var(--brand);color:#fff;text-decoration:none}
+  .m-quote{font-size:13.5px;color:var(--gray);border-left:3px solid var(--gold);padding-left:12px;margin-top:14px;font-style:italic}
+  .m-eps{font-size:13.5px;color:var(--gray);margin-top:12px}
+  .m-eps b{color:var(--ink)}
+
+  footer{border-top:1px solid var(--line);margin-top:36px;padding:22px 0 48px;
+    font-size:12.5px;color:var(--gray)}
+  footer a{color:var(--ink);font-weight:600;text-decoration:none}
 </style>
 </head>
 <body>
 
-<header>
+<div class="topbar">
   <div class="wrap">
-    <div class="kicker">Reading, Systematically</div>
-    <h1 class="serif">书架<span class="en">Amber's Bookshelf</span></h1>
-    <div class="dateline">播客里捡来的书 · 每本都<b>逐句核对过出处</b> · 更新于 <span id="upd">2026-07-06</span></div>
+    <div class="logo">📚 <span>Amber's Bookshelf</span></div>
+    <div class="top-note">播客里捡来的书 · 逐句核对过出处</div>
   </div>
-</header>
+</div>
 
-<main class="wrap">
+<div class="wrap hero">
+  <h1>好播客是书单的富矿</h1>
+  <p>真正做事的人在访谈里随口提到的书，比任何"年度必读榜"都可信。这里收录我最近听的播客和里面提到的每一本书——<em>谁提的、在哪一期、为什么值得读</em>，转写听错的书名也一并订正。</p>
+</div>
 
-  <p class="intro">好播客是书单的富矿——真正做事的人在访谈里随口提到的书，比任何"年度必读榜"都可信。这页收录我最近听的播客、以及里面被提到的每一本书：<em>谁提的、在哪一期、为什么值得读</em>。转写听错的书名也一并订正了。</p>
+<!-- ══════════ 书架 ══════════ -->
+<section class="wrap">
+  <div class="sec-head">
+    <div>
+      <h2>书架</h2>
+      <div class="sub">点封面看"为什么值得读"，右下角切换阅读状态（存在你自己的浏览器里）</div>
+    </div>
+    <div class="arrows">
+      <div class="arrow" onclick="scr('brow',-1)">←</div>
+      <div class="arrow" onclick="scr('brow',1)">→</div>
+    </div>
+  </div>
+  <div class="pills" id="pills"></div>
+  <div class="row" id="brow"></div>
+</section>
 
-  <!-- ══════════ 书单 ══════════ -->
-  <section id="books">
-    <div class="sec-head"><h2 class="serif">书单</h2><span>The List</span></div>
-    <div class="tabs" id="tabs"></div>
-    <div id="booklist"></div>
-    <p class="hint">点右下角状态可切换：待读 → 在读 → 读完（保存在本机浏览器）</p>
-  </section>
-
-  <!-- ══════════ 播客 ══════════ -->
-  <section id="pods">
-    <div class="sec-head"><h2 class="serif">播客推荐</h2><span>Where They Came From</span></div>
-    <div id="podlist"></div>
-  </section>
-
-</main>
+<!-- ══════════ 播客推荐 ══════════ -->
+<section class="wrap">
+  <div class="sec-head">
+    <div>
+      <h2>播客推荐</h2>
+      <div class="sub">书是从这些节目里捡来的——点卡片看推荐理由和入门顺序</div>
+    </div>
+    <div class="arrows">
+      <div class="arrow" onclick="scr('prow',-1)">←</div>
+      <div class="arrow" onclick="scr('prow',1)">→</div>
+    </div>
+  </div>
+  <div class="row" id="prow"></div>
+</section>
 
 <footer>
   <div class="wrap">
-    书读到哪了只存在你自己的浏览器里，别人打开看到的都是"待读"。<br>
+    阅读状态只存在你本机浏览器，别人打开看到的都是"待读"。<br>
     Curated by <a href="https://github.com/hiamberhuang" target="_blank">Amber Huang</a> · built with Claude · <a href="https://github.com/hiamberhuang/bookshelf" target="_blank">source</a>
   </div>
 </footer>
 
+<div class="ovl" id="ovl" onclick="if(event.target===this)closeM()">
+  <div class="sheet" id="sheet"></div>
+</div>
+
 <script>
 /* ───────── 数据 ───────── */
 const BOOKS = [
- {id:"blackswan", t:"黑天鹅", en:"The Black Swan", a:"纳西姆·塔勒布 Nassim Taleb", pri:3,
+ {id:"blackswan", t:"黑天鹅", en:"The Black Swan", a:"纳西姆·塔勒布", pri:3, tag:"认知 / 投资",
+  cover:{bg:"linear-gradient(160deg,#191919,#2e2c2a)", fg:"#f5f0e6", orn:"◆ ◆ ◆"},
   blurb:"“History doesn't crawl, it jumps.” 历史不是爬行的，它会跳跃。屠龙全场访谈的世界观底座：判断大选、判断自己公司哪年爆发，都是同一个非线性模型。增长在阈值前一直趴着是正常的——水开那一刻不重要，重要的是前面一直在烧。",
-  src:"屠龙 × 课代表立正", tag:"认知 / 投资"},
- {id:"dataclysm", t:"Dataclysm", en:"Who We Are (When We Think No One's Looking)", a:"Christian Rudder（OkCupid 联合创始人）", pri:3,
-  blurb:"用真实约会数据看人性：评价两极分化（一堆 10 分 + 一堆 1 分）远胜所有人给 6-7 分——争议才有讨论度，讨论度才有传播。屠龙把它用成产品哲学：不怕黑子，就怕没黑子。<span class='warn'>⚠️ 访谈里她口误说成 “data silo”，且此书无正式简中版，读英文原版。</span>",
-  src:"屠龙 × 课代表立正", tag:"数据 / 营销"},
- {id:"ride", t:"一生的旅程", en:"The Ride of a Lifetime", a:"罗伯特·艾格（迪士尼前 CEO）+ Joel Lovell", pri:2,
+  src:"屠龙 × 课代表立正"},
+ {id:"dataclysm", t:"Dataclysm", en:"Who We Are", a:"Christian Rudder", pri:3, tag:"数据 / 营销",
+  cover:{bg:"radial-gradient(circle at 30% 20%, rgba(255,255,255,.16) 2px, transparent 2.5px), radial-gradient(circle at 70% 45%, rgba(255,255,255,.14) 2px, transparent 2.5px), radial-gradient(circle at 45% 75%, rgba(255,255,255,.12) 2px, transparent 2.5px), linear-gradient(160deg,#173a5e,#1f5285)", fg:"#eaf2fb", orn:"· · ·"},
+  blurb:"OkCupid 联合创始人用真实约会数据看人性：评价两极分化（一堆 10 分 + 一堆 1 分）远胜所有人给 6-7 分——争议才有讨论度，讨论度才有传播。屠龙把它用成产品哲学：不怕黑子，就怕没黑子。<div class='warn' style='margin-top:8px'>⚠️ 访谈里她口误说成 “data silo”；此书无正式简中版，读英文原版。</div>",
+  src:"屠龙 × 课代表立正"},
+ {id:"ride", t:"一生的旅程", en:"The Ride of a Lifetime", a:"罗伯特·艾格", pri:2, tag:"品牌 / 领导力",
+  cover:{bg:"linear-gradient(160deg,#0e3f6e,#14548f)", fg:"#f3d489", orn:"✦"},
   blurb:"迪士尼 15 年 CEO 自述：皮克斯 / 漫威 / 卢卡斯 / 福斯四场收购，和乔布斯的交情。屠龙拿它示范“怎么拆书”——不是复述内容，是逐段问：这段对应国内什么现象？对我有什么用？",
-  src:"屠龙 × 课代表立正", tag:"品牌 / 领导力"},
- {id:"onchina", t:"论中国", en:"On China", a:"亨利·基辛格", pri:2,
+  src:"屠龙 × 课代表立正"},
+ {id:"onchina", t:"论中国", en:"On China", a:"亨利·基辛格", pri:2, tag:"地缘 / 认知",
+  cover:{bg:"linear-gradient(160deg,#8f231d,#a93226)", fg:"#f7e3b0", orn:"—"},
   blurb:"她的另一本拆书范例，读法很特别：标出“哪段作者作为老外理解错了”。把书当对话对象而不是标准答案，这个读法本身比书更值得学。",
-  src:"屠龙 × 课代表立正", tag:"地缘 / 认知"},
- {id:"beyond", t:"脑机穿越", en:"Beyond Boundaries", a:"米格尔·尼科莱利斯 Miguel Nicolelis", pri:1,
+  src:"屠龙 × 课代表立正"},
+ {id:"beyond", t:"脑机穿越", en:"Beyond Boundaries", a:"米格尔·尼科莱利斯", pri:1, tag:"科学",
+  cover:{bg:"linear-gradient(160deg,#3b3374,#54499e)", fg:"#e8e4ff", orn:"⌁"},
   blurb:"脑机接口先驱之作。屠龙博士毕业那年读完这本书，没投简历没约 office hour，直接冲进教授办公室说“我要干脑机接口”——一本书立刻变成行动，这个故事比书本身更有劲。",
-  src:"屠龙 × 课代表立正", tag:"科学"},
- {id:"inamori", t:"经营十二条", en:"", a:"稻盛和夫", pri:2,
+  src:"屠龙 × 课代表立正"},
+ {id:"inamori", t:"经营十二条", en:"", a:"稻盛和夫", pri:2, tag:"经营 / 定价",
+  cover:{bg:"linear-gradient(160deg,#3a362f,#4d483f)", fg:"#f0e9dc", orn:"十二"},
   blurb:"“定价就是经营”的出处（第六条）。屠龙的展开：定价 = 在“消费者心理剩余”和“产业链毛利”之间做分配，而营销的全部艺术是把“心理预期 − 制造成本”的距离拉大。一罐可乐成本一毛、心理预期六块，中间才有生意。",
-  src:"屠龙访谈中引用", tag:"经营 / 定价"},
- {id:"five", t:"5%的改变", en:"", a:"李松蔚", pri:2,
-  blurb:"“大道理没用，0.5% 的行动才有用——迈一小步、拿到正反馈、进正循环。” 课代表立正在《高手怎么用 AI》里引用的心理学思路，和这本书的核心主张一致。<span class='warn'>⚠️ 转写里人名被听成“李宗伟”，按内容判断应为心理咨询师李松蔚，供核对。</span>",
-  src:"十字路口 ·《高手怎么用AI》", tag:"心理 / 行动"},
- {id:"bmg", t:"商业模式新生代", en:"Business Model Generation", a:"亚历山大·奥斯特瓦德 Alexander Osterwalder", pri:2,
+  src:"屠龙访谈中引用"},
+ {id:"five", t:"5%的改变", en:"", a:"李松蔚", pri:2, tag:"心理 / 行动",
+  cover:{bg:"linear-gradient(160deg,#2f5d43,#3d7757)", fg:"#e9f5ee", orn:"5%"},
+  blurb:"“大道理没用，0.5% 的行动才有用——迈一小步、拿到正反馈、进正循环。” 课代表立正在《高手怎么用 AI》里引用的心理学思路，和这本书的核心主张一致。<div class='warn' style='margin-top:8px'>⚠️ 转写里人名被听成“李宗伟”，按内容判断应为心理咨询师李松蔚，供核对。</div>",
+  src:"十字路口 ·《高手怎么用AI》"},
+ {id:"bmg", t:"商业模式新生代", en:"Business Model Generation", a:"亚历山大·奥斯特瓦德", pri:2, tag:"商业模式",
+  cover:{bg:"linear-gradient(160deg,#b45309,#d97706)", fg:"#fef3e2", orn:"▦"},
   blurb:"“商业模式画布”九宫格的出处。Jett 在播客里反复用它压缩商业的第一问：客户分层 + 价值主张——“任何商业这两个点想不明白，后面全是扯淡。”想听懂创业者说话，先补这张画布。",
-  src:"Jett 播客 · 概念溯源", tag:"商业模式"},
- {id:"meta", t:"形而上学", en:"Metaphysics", a:"亚里士多德", pri:1,
+  src:"Jett 播客 · 概念溯源"},
+ {id:"meta", t:"形而上学", en:"Metaphysics", a:"亚里士多德", pri:1, tag:"哲学 / 溯源",
+  cover:{bg:"linear-gradient(160deg,#efe9dc,#e2d9c6)", fg:"#26221c", orn:"Α"},
   blurb:"“第一性原理”这个词的真正出处：认识事物最原初的依据，本身不可再被推导——数学里的公理。马斯克把它带火（电池按原材料重新算成本），创始人们把它当口头禅。不必通读，知道源头 + 电池案例即可接住话头。",
-  src:"延伸溯源 · Jett/James 口头禅", tag:"哲学 / 溯源"},
+  src:"延伸溯源 · 创始人口头禅"},
 ];
 
 const PODS = [
- {name:"课代表立正 × 屠龙（杨莹）", who:"课代表立正 = 康奈尔经济学博士、Superlinear Academy 创始人；屠龙 = 清华生物 → 匹兹堡脑科学博士 → 4 家公司创始人（童书店做到淘宝品类第一、护肤品年破亿）",
+ {name:"课代表立正 × 屠龙", tag:"访谈 · 95min", big:"屠",
+  bg:"linear-gradient(135deg,#8f231d,#c0392b)",
+  who:"课代表 = 康奈尔经济学博士、Superlinear Academy 创始人；屠龙 = 清华生物 → 脑科学博士 → 4 家公司创始人",
   url:"https://www.xiaohongshu.com/explore/6a3c06d10000000022018ed5",
   why:"95 分钟的“知识分子下场做生意”实录：会计开法拉利、山里印盗版书、拿游标卡尺讹钱的职业黑子……但每个乱局背后都接一个可迁移的模型：非线性增长、定价即经营、人才洼地赚钱、不看竞对守 originality。",
   eps:"<b>本页 6 本书的来源。</b>小红书可看全片。",
   books:["黑天鹅","Dataclysm","一生的旅程","论中国","脑机穿越","经营十二条"],
   quote:"“唯有一种人能成为将军：杀得一脸血一脸泥的时候，还记得兵书教你什么。”"},
- {name:"十字路口 Crossing", who:"主理人 Koji 杨远骋（真格基金 Venture Partner、AI Hacker House 发起人）· 中文 AI 圈对谈天花板",
+ {name:"十字路口 Crossing", tag:"AI 对谈", big:"路",
+  bg:"linear-gradient(135deg,#173a5e,#2c6aa8)",
+  who:"主理人 Koji 杨远骋（真格基金 Venture Partner、AI Hacker House 发起人）",
   url:"https://www.kojiyang.me",
-  why:"把“AI 行业发生了什么”翻译成“你该怎么办”的节目。招牌框架 Agency（主动性）+ Taste（品味）。《高手怎么用 AI》那期（嘉宾课代表立正）值得反复听：停掉 chat 用 agent 工具、写好 skill、真正拉开差距的是上下文的厚度。",
+  why:"把“AI 行业发生了什么”翻译成“你该怎么办”的节目，中文 AI 圈对谈天花板。招牌框架 Agency（主动性）+ Taste（品味）。《高手怎么用 AI》那期值得反复听：停掉 chat 用 agent 工具、写好 skill、真正拉开差距的是上下文的厚度。",
   eps:"入门顺序：<b>《高手怎么用AI》</b> → 2026 AI 投资观察 → 凯莉彭·制造好运 → 萌仔·识人心法。小宇宙 / B站 / YouTube 均有。",
   books:["5%的改变"],
   quote:"“学 AI 是学动词，不是学名词——模型有知识，agent 让它长出手。”"},
- {name:"Jett（蒋骧惠）的商业课系列", who:"NoumenaAI COO · 前小红书 KA 全行业负责人、SAP/蚂蚁商业化出身 · 十几年 toB 老炮",
+ {name:"Jett 蒋骧惠 · 商业课系列", tag:"商业化 · 5期", big:"商",
+  bg:"linear-gradient(135deg,#3a362f,#6b6355)",
+  who:"NoumenaAI COO · 前小红书 KA 全行业负责人 · SAP/蚂蚁商业化出身",
   url:"",
-  why:"五期听下来等于一门浓缩的商业化私教课：《第一性原理》《AI 营销课》《创业》《项目管理》+ 斯斯对谈《给女孩的商业第一课》。核心只有四句：一切皆销售；客户越贵生意越好；文科生定义问题、理科生实现问题；AI 是参谋不是牛马。",
+  why:"五期听下来等于一门浓缩的商业化私教课：《第一性原理》《AI 营销课》《创业》《项目管理》+ 斯斯对谈《给女孩的商业第一课》。核心四句：一切皆销售；客户越贵生意越好；文科生定义问题、理科生实现问题；AI 是参谋不是牛马。",
   eps:"最推荐先听 <b>斯斯 × 杰哥《给女孩的商业第一课》</b>——销售心法讲得最透（换位思考是销售最贵的能力；客户因恐惧和损失买单，不是因价值）。",
   books:["商业模式新生代","形而上学"],
   quote:"“先开枪后瞄准——花一点小钱，就知道业务怎么回事。”"},
- {name:"Hallway Chat（英文）", who:"Nabeel Hyatt（Spark Capital）× Fraser Kelton（前 OpenAI 产品负责人）· 两位投资人/产品人的走廊闲聊",
+ {name:"Hallway Chat", tag:"英文 · 硅谷", big:"H",
+  bg:"linear-gradient(135deg,#2f5d43,#4d8a68)",
+  who:"Nabeel Hyatt（Spark Capital）× Fraser Kelton（前 OpenAI 产品负责人）",
   url:"",
-  why:"硅谷一线视角的 AI 产品与投资漫谈，节奏像真的在走廊聊天——没有稿子，全是判断。中文 AI 博主圈（如 Zara Zhang）的高频信源之一，很多“国内还没聊起来”的话题这里先出现。",
-  eps:"配套英文信源：<b>The Rundown AI</b>（每日 newsletter，快讯扫盲）· <b>Every</b>（深度科技写作，Dan Shipper 的 AI 专栏）。均需网络条件允许。",
+  why:"硅谷一线视角的 AI 产品与投资漫谈，节奏像真的在走廊聊天——没有稿子，全是判断。中文 AI 博主圈的高频信源之一，很多“国内还没聊起来”的话题这里先出现。",
+  eps:"配套英文信源：<b>The Rundown AI</b>（每日 newsletter 快讯扫盲）· <b>Every</b>（深度科技写作）。均需网络条件允许。",
   books:[],
   quote:""},
 ];
 
+/* ───────── 状态 ───────── */
+const ST=["待读","在读","读完"], BC=["","b1","b2"], SC=["","s1","s2"];
+const store=k=>localStorage.getItem("bs_"+k)||"0";
+const setSt=(k,v)=>localStorage.setItem("bs_"+k,v);
+let filter=-1, curBook=null;
+
+const stars=n=>"★".repeat(n);
+
 /* ───────── 渲染 ───────── */
-const ST = ["待读","在读","读完"], STC=["st-0","st-1","st-2"];
-const store = k => localStorage.getItem("bs_"+k)||"0";
-const setSt = (k,v) => localStorage.setItem("bs_"+k,v);
-let filter = -1; // -1 全部
-
-function stars(n){ return "★".repeat(n)+"☆".repeat(3-n); }
-
 function renderBooks(){
-  const el = document.getElementById("booklist");
-  el.innerHTML = BOOKS.map(b=>{
-    const s = +store(b.id);
-    const dim = (filter>=0 && s!==filter) ? " dim":"";
-    return `<div class="book${dim}">
-      <div class="b-top">
-        <div class="b-title serif">《${b.t}》${b.en?`<span class="en">${b.en}</span>`:""}</div>
-        <div class="stars" title="优先级">${stars(b.pri)}</div>
+  document.getElementById("brow").innerHTML = BOOKS.map((b,i)=>{
+    const s=+store(b.id);
+    const dim=(filter>=0&&s!==filter)?" dim":"";
+    return `<div class="bcard${dim}" onclick="openB(${i})">
+      <div class="cover" style="background:${b.cover.bg};color:${b.cover.fg}">
+        <div class="badge ${BC[s]}">${ST[s]}</div>
+        <div class="frame"></div>
+        <div class="orn">${b.cover.orn}</div>
+        <div class="ct serif">${b.t}</div>
+        ${b.en?`<div class="cen">${b.en}</div>`:""}
+        <div class="ca">${b.a}</div>
       </div>
-      <div class="b-author">${b.a} · ${b.tag}</div>
-      <div class="b-blurb">${b.blurb}</div>
-      <div class="b-meta">
-        <div class="src">出处：<b>${b.src}</b></div>
-        <div class="status ${STC[s]}" onclick="cyc('${b.id}')">${ST[s]}</div>
+      <div class="binfo">
+        <div class="t"><span>${b.t}</span><span class="pri">${stars(b.pri)}</span></div>
+        <div class="a">${b.a} · ${b.tag}</div>
+        <div class="s">${b.src}</div>
       </div>
     </div>`;
   }).join("");
-  renderTabs();
+  renderPills();
 }
-function renderTabs(){
-  const cnt=[0,0,0];
-  BOOKS.forEach(b=>cnt[+store(b.id)]++);
-  const t=document.getElementById("tabs");
-  const mk=(lbl,i,n)=>`<div class="tab${filter===i?" on":""}" onclick="flt(${i})">${lbl} <b>${n}</b></div>`;
-  t.innerHTML = mk("全部",-1,BOOKS.length)+mk("待读",0,cnt[0])+mk("在读",1,cnt[1])+mk("读完",2,cnt[2]);
+function renderPills(){
+  const cnt=[0,0,0]; BOOKS.forEach(b=>cnt[+store(b.id)]++);
+  const mk=(l,i,n)=>`<div class="pill${filter===i?" on":""}" onclick="flt(${i})">${l}<b>${n}</b></div>`;
+  document.getElementById("pills").innerHTML =
+    mk("全部",-1,BOOKS.length)+mk("待读",0,cnt[0])+mk("在读",1,cnt[1])+mk("读完",2,cnt[2]);
 }
-function cyc(id){ setSt(id,(+store(id)+1)%3); renderBooks(); }
-function flt(i){ filter=(filter===i?-1:i); renderBooks(); }
-
 function renderPods(){
-  document.getElementById("podlist").innerHTML = PODS.map(p=>`
-    <div class="pod">
-      <div class="p-name serif">${p.url?`<a href="${p.url}" target="_blank">${p.name}</a>`:p.name}</div>
-      <div class="p-who">${p.who}</div>
-      <div class="p-why">${p.why}</div>
-      <div class="p-eps">${p.eps}</div>
-      ${p.books.length?`<div class="chips">${p.books.map(b=>`<span class="chip bk">📖 ${b}</span>`).join("")}</div>`:""}
-      ${p.quote?`<div class="quote">${p.quote}</div>`:""}
+  document.getElementById("prow").innerHTML = PODS.map((p,i)=>`
+    <div class="pcard" onclick="openP(${i})">
+      <div class="ptile" style="background:${p.bg}">
+        <div class="ptag">${p.tag}</div>
+        <div class="big">${p.big}</div>
+        <div class="pn">${p.name}</div>
+      </div>
+      <div class="pinfo">
+        <div class="w">${p.who}</div>
+        <div class="d">${p.why}</div>
+        ${p.books.length?`<div class="chips">${p.books.map(b=>`<span class="chip">📖 ${b}</span>`).join("")}</div>`:""}
+      </div>
     </div>`).join("");
 }
+
+/* ───────── 交互 ───────── */
+function flt(i){ filter=(filter===i?-1:i); renderBooks(); }
+function scr(id,dir){ document.getElementById(id).scrollBy({left:dir*560,behavior:"smooth"}); }
+
+function openB(i){
+  curBook=i; const b=BOOKS[i], s=+store(b.id);
+  document.getElementById("sheet").innerHTML=`
+    <button class="x" onclick="closeM()">✕</button>
+    <div class="m-kick">书 · ${b.tag} · 优先级 ${stars(b.pri)}</div>
+    <div class="m-title serif">《${b.t}》</div>
+    <div class="m-sub">${b.a}${b.en?` · ${b.en}`:""}</div>
+    <div class="m-body">${b.blurb}</div>
+    <div class="m-meta">
+      <div class="m-src">出处：<b>${b.src}</b></div>
+      <button class="stbtn ${SC[s]}" onclick="cyc()">${ST[s]} · 点击切换</button>
+    </div>`;
+  showM();
+}
+function cyc(){
+  const b=BOOKS[curBook]; setSt(b.id,(+store(b.id)+1)%3);
+  openB(curBook); renderBooks();
+}
+function openP(i){
+  const p=PODS[i];
+  document.getElementById("sheet").innerHTML=`
+    <button class="x" onclick="closeM()">✕</button>
+    <div class="m-kick">播客 · ${p.tag}</div>
+    <div class="m-title">${p.name}</div>
+    <div class="m-sub">${p.who}</div>
+    <div class="m-body">${p.why}</div>
+    <div class="m-eps">${p.eps}</div>
+    ${p.books.length?`<div class="chips" style="margin-top:12px">${p.books.map(b=>`<span class="chip">📖 ${b}</span>`).join("")}</div>`:""}
+    ${p.quote?`<div class="m-quote">${p.quote}</div>`:""}
+    ${p.url?`<a class="gobtn" href="${p.url}" target="_blank">去收听 →</a>`:""}`;
+  showM();
+}
+function showM(){ document.getElementById("ovl").classList.add("show"); document.body.style.overflow="hidden"; }
+function closeM(){ document.getElementById("ovl").classList.remove("show"); document.body.style.overflow=""; }
+document.addEventListener("keydown",e=>{ if(e.key==="Escape")closeM(); });
+
 renderBooks(); renderPods();
 </script>
 </body>
