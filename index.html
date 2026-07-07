@@ -163,12 +163,12 @@
   <div class="row" id="brow"></div>
 </section>
 
-<!-- ══════════ 播客推荐 ══════════ -->
+<!-- ══════════ 播客 · 系列推荐 ══════════ -->
 <section class="wrap">
   <div class="sec-head">
     <div>
-      <h2>播客推荐</h2>
-      <div class="sub">待读的书多半从这些节目里捡来——点卡片看推荐理由和入门顺序</div>
+      <h2>播客 · 系列推荐</h2>
+      <div class="sub">值得整个订阅的节目——点卡片看推荐理由和入门顺序</div>
     </div>
     <div class="arrows">
       <div class="arrow" onclick="scr('prow',-1)">←</div>
@@ -176,6 +176,21 @@
     </div>
   </div>
   <div class="row" id="prow"></div>
+</section>
+
+<!-- ══════════ 播客 · 单集推荐 ══════════ -->
+<section class="wrap">
+  <div class="sec-head">
+    <div>
+      <h2>播客 · 单集推荐</h2>
+      <div class="sub">书架上的待读多半从这几期里捡来——一期一张卡</div>
+    </div>
+    <div class="arrows">
+      <div class="arrow" onclick="scr('erow',-1)">←</div>
+      <div class="arrow" onclick="scr('erow',1)">→</div>
+    </div>
+  </div>
+  <div class="row" id="erow"></div>
 </section>
 
 <footer>
@@ -274,7 +289,34 @@ const BOOKS = [
   src:"我的书架 · 读完", srcUrl:""},
 ];
 
-const PODS = [
+const SERIES = [
+ {name:"十字路口 Crossing", tag:"AI 对谈", big:"路", img:"covers/pod_crossing.jpg",
+  bg:"linear-gradient(135deg,#173a5e,#2c6aa8)",
+  who:"主理人 Koji 杨远骋（真格基金 Venture Partner、AI Hacker House 发起人）",
+  url:XYZ_CROSSING,
+  why:"把“AI 行业发生了什么”翻译成“你该怎么办”的节目，中文 AI 圈对谈天花板。招牌框架 Agency（主动性）+ Taste（品味）——内容是判断力的容器。",
+  eps:"入门顺序：<b>《高手怎么用AI》</b>（见单集推荐）→ 2026 AI 投资观察 → 凯莉彭·制造好运 → 萌仔·识人心法。小宇宙 / B站 / YouTube 均有。",
+  books:[],
+  quote:""},
+ {name:"Jett 蒋骧惠 · 商业课系列", tag:"商业化", big:"商", img:"",
+  bg:"linear-gradient(135deg,#3a362f,#6b6355)",
+  who:"NoumenaAI COO · 前小红书 KA 全行业负责人 · SAP/蚂蚁商业化出身",
+  url:"https://www.xiaohongshu.com/user/profile/5b4aefad6b58b762506a6323",
+  why:"一个十几年 toB 商业化老炮的免费私教课：《第一性原理》《AI 营销课》《创业》《项目管理》四期自制内容。核心四句：一切皆销售；客户越贵生意越好；文科生定义问题、理科生实现问题；AI 是参谋不是牛马。",
+  eps:"内容都在他的小红书号 <b>杰特哥Jett</b>；对谈单集见「斯斯 × 杰哥」那张卡。",
+  books:["商业模式新生代","形而上学"],
+  quote:"“先开枪后瞄准——花一点小钱，就知道业务怎么回事。”"},
+ {name:"Hallway Chat", tag:"英文 · 硅谷", big:"H", img:"covers/pod_hallway.jpg",
+  bg:"linear-gradient(135deg,#2f5d43,#4d8a68)",
+  who:"Nabeel Hyatt（Spark Capital）× Fraser Kelton（前 OpenAI 产品负责人）",
+  url:"https://podcasts.apple.com/us/podcast/hallway-chat/id1090529645",
+  why:"硅谷一线视角的 AI 产品与投资漫谈，节奏像真的在走廊聊天——没有稿子，全是判断。中文 AI 博主圈的高频信源之一，很多“国内还没聊起来”的话题这里先出现。",
+  eps:"配套英文信源：<b>The Rundown AI</b>（每日 newsletter 快讯扫盲）· <b>Every</b>（深度科技写作）。均需网络条件允许。",
+  books:[],
+  quote:""},
+];
+
+const EPISODES = [
  {name:"课代表立正 × 屠龙", tag:"访谈 · 95min", big:"屠", img:"covers/pod_tulong.jpg",
   bg:"linear-gradient(135deg,#8f231d,#c0392b)",
   who:"课代表 = 康奈尔经济学博士、Superlinear Academy 创始人；屠龙 = 清华生物 → 脑科学博士 → 4 家公司创始人",
@@ -283,30 +325,22 @@ const PODS = [
   eps:"<b>书架上 6 本待读书的来源。</b>小红书可看全片。",
   books:["黑天鹅","Dataclysm","一生的旅程","论中国","脑机穿越","经营十二条"],
   quote:"“唯有一种人能成为将军：杀得一脸血一脸泥的时候，还记得兵书教你什么。”"},
- {name:"十字路口 Crossing", tag:"AI 对谈", big:"路", img:"covers/pod_crossing.jpg",
+ {name:"高手怎么用 AI？", tag:"十字路口 · 上集", big:"AI", img:"covers/pod_gaoshou.jpg",
   bg:"linear-gradient(135deg,#173a5e,#2c6aa8)",
-  who:"主理人 Koji 杨远骋（真格基金 Venture Partner、AI Hacker House 发起人）",
-  url:XYZ_CROSSING,
-  why:"把“AI 行业发生了什么”翻译成“你该怎么办”的节目，中文 AI 圈对谈天花板。招牌框架 Agency（主动性）+ Taste（品味）。《高手怎么用 AI》那期值得反复听：停掉 chat 用 agent 工具、写好 skill、真正拉开差距的是上下文的厚度。",
-  eps:"入门顺序：<b>《高手怎么用AI》</b> → 2026 AI 投资观察 → 凯莉彭·制造好运 → 萌仔·识人心法。小宇宙 / B站 / YouTube 均有。",
+  who:"十字路口 · Koji 对谈课代表立正（Superlinear Academy 创始人）",
+  url:"https://www.bilibili.com/video/BV13jER6dEQT/",
+  why:"高手用 AI 的两个本质：总在想“我能为 AI 做什么”、遇事不决先问 AI。三步法：停掉 chat 改用 agent 工具（Claude Code / Codex）、写好 skill、多攒上下文——真正拉开差距的是上下文的厚度。",
+  eps:"B站有视频版（上集）；小宇宙搜「十字路口」同步更新。",
   books:["5%的改变"],
   quote:"“学 AI 是学动词，不是学名词——模型有知识，agent 让它长出手。”"},
- {name:"Jett 蒋骧惠 · 商业课系列", tag:"商业化 · 5期", big:"商", img:"",
-  bg:"linear-gradient(135deg,#3a362f,#6b6355)",
-  who:"NoumenaAI COO · 前小红书 KA 全行业负责人 · SAP/蚂蚁商业化出身",
-  url:"",
-  why:"五期听下来等于一门浓缩的商业化私教课：《第一性原理》《AI 营销课》《创业》《项目管理》+ 斯斯对谈《给女孩的商业第一课》。核心四句：一切皆销售；客户越贵生意越好；文科生定义问题、理科生实现问题；AI 是参谋不是牛马。",
-  eps:"最推荐先听 <b>斯斯 × 杰哥《给女孩的商业第一课》</b>——销售心法讲得最透（换位思考是销售最贵的能力；客户因恐惧和损失买单，不是因价值）。",
-  books:["商业模式新生代","形而上学"],
-  quote:"“先开枪后瞄准——花一点小钱，就知道业务怎么回事。”"},
- {name:"Hallway Chat", tag:"英文 · 硅谷", big:"H", img:"covers/pod_hallway.jpg",
-  bg:"linear-gradient(135deg,#2f5d43,#4d8a68)",
-  who:"Nabeel Hyatt（Spark Capital）× Fraser Kelton（前 OpenAI 产品负责人）",
-  url:"",
-  why:"硅谷一线视角的 AI 产品与投资漫谈，节奏像真的在走廊聊天——没有稿子，全是判断。中文 AI 博主圈的高频信源之一，很多“国内还没聊起来”的话题这里先出现。",
-  eps:"配套英文信源：<b>The Rundown AI</b>（每日 newsletter 快讯扫盲）· <b>Every</b>（深度科技写作）。均需网络条件允许。",
+ {name:"斯斯 × 杰哥：把东西卖出去", tag:"给女孩的商业第一课", big:"售", img:"covers/pod_sisi.jpg",
+  bg:"linear-gradient(135deg,#b0578d,#d886b5)",
+  who:"闪光少女斯斯 主持 ·《给女孩的商业第一课》× Jett 蒋骧惠",
+  url:"https://www.xiaoyuzhoufm.com/podcast/6423e930179eec5331a2cd9b",
+  why:"销售心法讲得最透的一期：换位思考是销售最贵的能力；客户不是因为价值买单，是因为恐惧和损失买单；管理 = 设决策标准而不是管细节（把提成口径改成“完成率”，让销售自己选客户）。",
+  eps:"链接是节目主页，进去找 <b>杰哥/Jett</b> 那期。",
   books:[],
-  quote:""},
+  quote:"“选客户就代表了你的商业模式——给马云卖水永远是好生意。”"},
 ];
 
 /* ───────── 渲染 ───────── */
@@ -316,8 +350,8 @@ const stars=n=>n?"★".repeat(n):"";
 
 function renderBooks(){
   document.getElementById("brow").innerHTML = BOOKS.map((b,i)=>{
-    const dim=(filter>=0&&b.st!==filter)?" dim":"";
-    return `<div class="bcard${dim}" onclick="openB(${i})">
+    if(filter>=0 && b.st!==filter) return "";
+    return `<div class="bcard" onclick="openB(${i})">
       <div class="cover">
         <div class="badge ${BC[b.st]}">${ST[b.st]}</div>
         <img src="${b.img}" alt="《${b.t}》封面" loading="lazy" onerror="this.style.display='none'">
@@ -337,9 +371,8 @@ function renderPills(){
   document.getElementById("pills").innerHTML =
     mk("全部",-1,BOOKS.length)+mk("在读",1,cnt[1])+mk("待读",0,cnt[0])+mk("读完",2,cnt[2]);
 }
-function renderPods(){
-  document.getElementById("prow").innerHTML = PODS.map((p,i)=>`
-    <div class="pcard" onclick="openP(${i})">
+function podCard(p,list,i){
+  return `<div class="pcard" onclick="openP('${list}',${i})">
       <div class="ptile" style="background:${p.bg}">
         ${p.img?`<img class="bgimg" src="${p.img}" alt="" loading="lazy" onerror="this.remove()"><div class="shade"></div>`:`<div class="big">${p.big}</div>`}
         <div class="ptag">${p.tag}</div>
@@ -350,7 +383,11 @@ function renderPods(){
         <div class="d">${p.why}</div>
         ${p.books.length?`<div class="chips">${p.books.map(b=>`<span class="chip">📖 ${b}</span>`).join("")}</div>`:""}
       </div>
-    </div>`).join("");
+    </div>`;
+}
+function renderPods(){
+  document.getElementById("prow").innerHTML = SERIES.map((p,i)=>podCard(p,'s',i)).join("");
+  document.getElementById("erow").innerHTML = EPISODES.map((p,i)=>podCard(p,'e',i)).join("");
 }
 
 /* ───────── 交互 ───────── */
@@ -375,8 +412,8 @@ function openB(i){
     <a class="gobtn ghost" href="${b.douban}" target="_blank">豆瓣详情 →</a>${b.srcUrl?`<a class="gobtn" href="${b.srcUrl}" target="_blank">去看这期 →</a>`:""}`;
   showM();
 }
-function openP(i){
-  const p=PODS[i];
+function openP(list,i){
+  const p=(list==='s'?SERIES:EPISODES)[i];
   document.getElementById("sheet").innerHTML=`
     <button class="x" onclick="closeM()">✕</button>
     <div class="m-kick">播客 · ${p.tag}</div>
