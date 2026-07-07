@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Amber's Bookshelf · 我的书架</title>
-<meta name="description" content="我的书架：在读、待读、读完，以及播客里捡来的书——每本都核对过出处。">
+<meta name="description" content="我的书架：在读、读完的，和从播客里捡来的下一本。">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
 <style>
   :root{
     --ink:#222222; --gray:#717171; --line:#ebebeb; --bg:#ffffff;
@@ -137,14 +139,13 @@
 
 <div class="topbar">
   <div class="wrap">
-    <div class="logo">📚 <span>Amber's Bookshelf</span></div>
-    <div class="top-note">在读 · 待读 · 读完 · 出处可查</div>
+    <div class="logo"><img src="icon.png" alt="" style="width:26px;height:26px;border-radius:6px"> <span>Amber's Bookshelf</span></div>
   </div>
 </div>
 
 <div class="wrap hero">
   <h1>我的书架</h1>
-  <p>上面一排是书：我在读的、读完推荐的，和从播客里捡来的待读——<em>谁提的、在哪一期、为什么值得读</em>，每本都核对过出处，转写听错的书名一并订正。下面一排是这些书的来处：我最近在听的节目。</p>
+  <p>读什么，比读多少重要。这里放着我在读的、读完觉得好的，和从播客里捡回来准备读的——<em>每一本都写了它是怎么上架的</em>。</p>
 </div>
 
 <!-- ══════════ 书架 ══════════ -->
@@ -152,7 +153,7 @@
   <div class="sec-head">
     <div>
       <h2>书架</h2>
-      <div class="sub">点封面看"为什么值得读"和出处链接 · 状态由我本人手动更新</div>
+      <div class="sub">点封面看简介和出处</div>
     </div>
     <div class="arrows">
       <div class="arrow" onclick="scr('brow',-1)">←</div>
@@ -168,7 +169,7 @@
   <div class="sec-head">
     <div>
       <h2>播客 · 系列推荐</h2>
-      <div class="sub">值得整个订阅的节目——点卡片看推荐理由和入门顺序</div>
+      <div class="sub">一直在听的节目</div>
     </div>
     <div class="arrows">
       <div class="arrow" onclick="scr('prow',-1)">←</div>
@@ -183,7 +184,7 @@
   <div class="sec-head">
     <div>
       <h2>播客 · 单集推荐</h2>
-      <div class="sub">书架上的待读多半从这几期里捡来——一期一张卡</div>
+      <div class="sub">书架上好几本待读，就是从这几期捡的</div>
     </div>
     <div class="arrows">
       <div class="arrow" onclick="scr('erow',-1)">←</div>
