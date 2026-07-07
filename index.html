@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amber's Bookshelf · 播客里捡来的书</title>
-<meta name="description" content="从播客和访谈里逐句核对出来的书单：谁提的、为什么值得读、读到哪了。">
+<title>Amber's Bookshelf · 我的书架</title>
+<meta name="description" content="我的书架：在读、待读、读完，以及播客里捡来的书——每本都核对过出处。">
 <style>
   :root{
     --ink:#222222; --gray:#717171; --line:#ebebeb; --bg:#ffffff;
@@ -31,7 +31,7 @@
   /* ── hero ── */
   .hero{padding:40px 0 8px}
   .hero h1{font-size:clamp(26px,4.5vw,34px);font-weight:800;letter-spacing:-.01em}
-  .hero p{color:var(--gray);font-size:15px;margin-top:8px;max-width:640px}
+  .hero p{color:var(--gray);font-size:15px;margin-top:8px;max-width:660px}
   .hero p em{font-style:normal;color:var(--ink);font-weight:600}
 
   /* ── section ── */
@@ -64,14 +64,9 @@
   .bcard:hover{transform:translateY(-3px)}
   .bcard.dim{opacity:.3}
   .cover{aspect-ratio:2/3;border-radius:12px;overflow:hidden;position:relative;
-    box-shadow:0 2px 10px rgba(0,0,0,.14);display:flex;flex-direction:column;
-    justify-content:center;align-items:center;text-align:center;padding:16px 14px;transition:.18s}
+    box-shadow:0 2px 10px rgba(0,0,0,.14);background:#f0ede6;transition:.18s}
   .bcard:hover .cover{box-shadow:var(--shadow)}
-  .cover .frame{position:absolute;inset:9px;border:1px solid rgba(255,255,255,.35);border-radius:7px;pointer-events:none}
-  .cover .ct{font-size:19px;font-weight:800;line-height:1.35;letter-spacing:.04em}
-  .cover .cen{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-top:8px}
-  .cover .ca{position:absolute;bottom:14px;left:0;right:0;font-size:10px;opacity:.85;letter-spacing:.05em}
-  .cover .orn{font-size:11px;opacity:.6;margin-bottom:10px;letter-spacing:.3em}
+  .cover img{width:100%;height:100%;object-fit:cover;display:block}
   .badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;padding:3px 10px;
     border-radius:999px;background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.18);z-index:2}
   .badge.b1{background:var(--brand);color:#fff}
@@ -80,7 +75,7 @@
   .binfo .t{font-size:14.5px;font-weight:700;line-height:1.4;display:flex;justify-content:space-between;gap:6px}
   .binfo .t .pri{color:var(--ink);font-size:12px;white-space:nowrap;font-weight:600}
   .binfo .a{font-size:12.5px;color:var(--gray);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .binfo .s{font-size:12px;color:var(--gray);margin-top:1px}
+  .binfo .s{font-size:12px;color:var(--gray);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
   /* ── podcast card ── */
   .pcard{flex:0 0 320px;min-width:0;width:320px;scroll-snap-align:start;cursor:pointer;transition:.18s}
@@ -88,11 +83,13 @@
   .ptile{aspect-ratio:16/9;border-radius:var(--radius);position:relative;overflow:hidden;
     box-shadow:0 2px 10px rgba(0,0,0,.12);display:flex;align-items:flex-end;padding:16px;transition:.18s}
   .pcard:hover .ptile{box-shadow:var(--shadow)}
+  .ptile .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .ptile .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.06) 30%,rgba(0,0,0,.62))}
   .ptile .big{position:absolute;right:-6px;top:-18px;font-size:110px;font-weight:900;opacity:.14;
     font-family:"Songti SC","STSong",Georgia,serif;line-height:1;pointer-events:none;color:#fff}
-  .ptile .pn{color:#fff;font-weight:800;font-size:17px;line-height:1.35;text-shadow:0 1px 6px rgba(0,0,0,.25);position:relative}
+  .ptile .pn{color:#fff;font-weight:800;font-size:17px;line-height:1.35;text-shadow:0 1px 6px rgba(0,0,0,.35);position:relative}
   .ptag{position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;background:rgba(255,255,255,.92);
-    color:var(--ink);padding:3px 10px;border-radius:999px}
+    color:var(--ink);padding:3px 10px;border-radius:999px;z-index:2}
   .pinfo{padding:12px 2px 0}
   .pinfo .w{font-size:12.5px;color:var(--gray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .pinfo .d{font-size:13.5px;color:var(--ink);margin-top:4px;display:-webkit-box;
@@ -119,13 +116,14 @@
   .m-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
     border-top:1px solid var(--line);margin-top:16px;padding-top:14px}
   .m-src{font-size:13px;color:var(--gray)}
+  .m-src a{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
   .m-src b{color:var(--ink)}
-  .stbtn{font-size:13.5px;font-weight:700;padding:9px 22px;border-radius:10px;cursor:pointer;border:1.5px solid var(--ink);
-    background:#fff;color:var(--ink);transition:.15s}
-  .stbtn.s1{background:var(--brand);border-color:var(--brand);color:#fff}
-  .stbtn.s2{background:var(--green);border-color:var(--green);color:#fff}
-  .gobtn{display:inline-block;margin-top:16px;font-size:14px;font-weight:700;padding:11px 24px;border-radius:10px;
+  .mst{font-size:12.5px;font-weight:700;padding:5px 14px;border-radius:999px;background:#f2f2f2;color:var(--gray)}
+  .mst.s1{background:var(--brand);color:#fff}
+  .mst.s2{background:var(--green);color:#fff}
+  .gobtn{display:inline-block;margin-top:16px;margin-right:10px;font-size:14px;font-weight:700;padding:11px 22px;border-radius:10px;
     background:var(--brand);color:#fff;text-decoration:none}
+  .gobtn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
   .m-quote{font-size:13.5px;color:var(--gray);border-left:3px solid var(--gold);padding-left:12px;margin-top:14px;font-style:italic}
   .m-eps{font-size:13.5px;color:var(--gray);margin-top:12px}
   .m-eps b{color:var(--ink)}
@@ -140,13 +138,13 @@
 <div class="topbar">
   <div class="wrap">
     <div class="logo">📚 <span>Amber's Bookshelf</span></div>
-    <div class="top-note">播客里捡来的书 · 逐句核对过出处</div>
+    <div class="top-note">在读 · 待读 · 读完 · 出处可查</div>
   </div>
 </div>
 
 <div class="wrap hero">
-  <h1>好播客是书单的富矿</h1>
-  <p>真正做事的人在访谈里随口提到的书，比任何"年度必读榜"都可信。这里收录我最近听的播客和里面提到的每一本书——<em>谁提的、在哪一期、为什么值得读</em>，转写听错的书名也一并订正。</p>
+  <h1>我的书架</h1>
+  <p>上面一排是书：我在读的、读完推荐的，和从播客里捡来的待读——<em>谁提的、在哪一期、为什么值得读</em>，每本都核对过出处，转写听错的书名一并订正。下面一排是这些书的来处：我最近在听的节目。</p>
 </div>
 
 <!-- ══════════ 书架 ══════════ -->
@@ -154,7 +152,7 @@
   <div class="sec-head">
     <div>
       <h2>书架</h2>
-      <div class="sub">点封面看"为什么值得读"，右下角切换阅读状态（存在你自己的浏览器里）</div>
+      <div class="sub">点封面看"为什么值得读"和出处链接 · 状态由我本人手动更新</div>
     </div>
     <div class="arrows">
       <div class="arrow" onclick="scr('brow',-1)">←</div>
@@ -170,7 +168,7 @@
   <div class="sec-head">
     <div>
       <h2>播客推荐</h2>
-      <div class="sub">书是从这些节目里捡来的——点卡片看推荐理由和入门顺序</div>
+      <div class="sub">待读的书多半从这些节目里捡来——点卡片看推荐理由和入门顺序</div>
     </div>
     <div class="arrows">
       <div class="arrow" onclick="scr('prow',-1)">←</div>
@@ -182,7 +180,7 @@
 
 <footer>
   <div class="wrap">
-    阅读状态只存在你本机浏览器，别人打开看到的都是"待读"。<br>
+    封面与简介信息来自豆瓣读书，版权归原出版方所有。<br>
     Curated by <a href="https://github.com/hiamberhuang" target="_blank">Amber Huang</a> · built with Claude · <a href="https://github.com/hiamberhuang/bookshelf" target="_blank">source</a>
   </div>
 </footer>
@@ -192,64 +190,108 @@
 </div>
 
 <script>
-/* ───────── 数据 ───────── */
+/* ───────── 数据（阅读状态 st: 0待读 / 1在读 / 2读完，由 Amber 口头更新、Claude 改数据）───────── */
+const XHS_TULONG = "https://www.xiaohongshu.com/explore/6a3c06d10000000022018ed5";
+const XYZ_CROSSING = "https://www.xiaoyuzhoufm.com/podcast/60502e253c92d4f62c2a9577";
+
 const BOOKS = [
- {id:"blackswan", t:"黑天鹅", en:"The Black Swan", a:"纳西姆·塔勒布", pri:3, tag:"认知 / 投资",
-  cover:{bg:"linear-gradient(160deg,#191919,#2e2c2a)", fg:"#f5f0e6", orn:"◆ ◆ ◆"},
+ /* ── 在读 ── */
+ {id:"naval", st:1, t:"纳瓦尔宝典", en:"The Almanack of Naval Ravikant", a:"埃里克·乔根森 编", tag:"财富 / 心智",
+  img:"covers/naval.jpg", douban:"https://book.douban.com/subject/35876121/",
+  blurb:"硅谷天使投资人 Naval Ravikant 关于财富与幸福的思考合集：找到你的 specific knowledge、用杠杆（代码/媒体/资本）放大判断力、赚钱靠的不是拼时间而是拥有资产。",
+  src:"我的书架 · 在读", srcUrl:""},
+ {id:"possible", st:1, t:"可能性的艺术", en:"比较政治学三十讲", a:"刘瑜", tag:"政治学 / 认知",
+  img:"covers/possible.jpg", douban:"https://book.douban.com/subject/35819419/",
+  blurb:"刘瑜的比较政治学三十讲：把单个国家放进世界的坐标系里看——理解政治不是站队，是理解“可能性的边界”。",
+  src:"我的书架 · 在读", srcUrl:""},
+
+ /* ── 待读 ── */
+ {id:"blackswan", st:0, pri:3, t:"黑天鹅", en:"The Black Swan", a:"纳西姆·塔勒布", tag:"认知 / 投资",
+  img:"covers/blackswan.jpg", douban:"https://book.douban.com/subject/30422558/",
   blurb:"“History doesn't crawl, it jumps.” 历史不是爬行的，它会跳跃。屠龙全场访谈的世界观底座：判断大选、判断自己公司哪年爆发，都是同一个非线性模型。增长在阈值前一直趴着是正常的——水开那一刻不重要，重要的是前面一直在烧。",
-  src:"屠龙 × 课代表立正"},
- {id:"dataclysm", t:"Dataclysm", en:"Who We Are", a:"Christian Rudder", pri:3, tag:"数据 / 营销",
-  cover:{bg:"radial-gradient(circle at 30% 20%, rgba(255,255,255,.16) 2px, transparent 2.5px), radial-gradient(circle at 70% 45%, rgba(255,255,255,.14) 2px, transparent 2.5px), radial-gradient(circle at 45% 75%, rgba(255,255,255,.12) 2px, transparent 2.5px), linear-gradient(160deg,#173a5e,#1f5285)", fg:"#eaf2fb", orn:"· · ·"},
+  src:"屠龙 × 课代表立正", srcUrl:XHS_TULONG},
+ {id:"dataclysm", st:0, pri:3, t:"Dataclysm", en:"Who We Are (When We Think No One's Looking)", a:"Christian Rudder", tag:"数据 / 营销",
+  img:"covers/dataclysm.jpg", douban:"https://book.douban.com/subject/25978000/",
   blurb:"OkCupid 联合创始人用真实约会数据看人性：评价两极分化（一堆 10 分 + 一堆 1 分）远胜所有人给 6-7 分——争议才有讨论度，讨论度才有传播。屠龙把它用成产品哲学：不怕黑子，就怕没黑子。<div class='warn' style='margin-top:8px'>⚠️ 访谈里她口误说成 “data silo”；此书无正式简中版，读英文原版。</div>",
-  src:"屠龙 × 课代表立正"},
- {id:"ride", t:"一生的旅程", en:"The Ride of a Lifetime", a:"罗伯特·艾格", pri:2, tag:"品牌 / 领导力",
-  cover:{bg:"linear-gradient(160deg,#0e3f6e,#14548f)", fg:"#f3d489", orn:"✦"},
-  blurb:"迪士尼 15 年 CEO 自述：皮克斯 / 漫威 / 卢卡斯 / 福斯四场收购，和乔布斯的交情。屠龙拿它示范“怎么拆书”——不是复述内容，是逐段问：这段对应国内什么现象？对我有什么用？",
-  src:"屠龙 × 课代表立正"},
- {id:"onchina", t:"论中国", en:"On China", a:"亨利·基辛格", pri:2, tag:"地缘 / 认知",
-  cover:{bg:"linear-gradient(160deg,#8f231d,#a93226)", fg:"#f7e3b0", orn:"—"},
-  blurb:"她的另一本拆书范例，读法很特别：标出“哪段作者作为老外理解错了”。把书当对话对象而不是标准答案，这个读法本身比书更值得学。",
-  src:"屠龙 × 课代表立正"},
- {id:"beyond", t:"脑机穿越", en:"Beyond Boundaries", a:"米格尔·尼科莱利斯", pri:1, tag:"科学",
-  cover:{bg:"linear-gradient(160deg,#3b3374,#54499e)", fg:"#e8e4ff", orn:"⌁"},
-  blurb:"脑机接口先驱之作。屠龙博士毕业那年读完这本书，没投简历没约 office hour，直接冲进教授办公室说“我要干脑机接口”——一本书立刻变成行动，这个故事比书本身更有劲。",
-  src:"屠龙 × 课代表立正"},
- {id:"inamori", t:"经营十二条", en:"", a:"稻盛和夫", pri:2, tag:"经营 / 定价",
-  cover:{bg:"linear-gradient(160deg,#3a362f,#4d483f)", fg:"#f0e9dc", orn:"十二"},
-  blurb:"“定价就是经营”的出处（第六条）。屠龙的展开：定价 = 在“消费者心理剩余”和“产业链毛利”之间做分配，而营销的全部艺术是把“心理预期 − 制造成本”的距离拉大。一罐可乐成本一毛、心理预期六块，中间才有生意。",
-  src:"屠龙访谈中引用"},
- {id:"five", t:"5%的改变", en:"", a:"李松蔚", pri:2, tag:"心理 / 行动",
-  cover:{bg:"linear-gradient(160deg,#2f5d43,#3d7757)", fg:"#e9f5ee", orn:"5%"},
+  src:"屠龙 × 课代表立正", srcUrl:XHS_TULONG},
+ {id:"sogood", st:0, pri:3, t:"优秀到不能被忽视", en:"So Good They Can't Ignore You", a:"卡尔·纽波特", tag:"职业 / 心智",
+  img:"covers/sogood.jpg", douban:"https://book.douban.com/subject/26781120/",
+  blurb:"Cal Newport 的反鸡汤职业观：“追随激情”是坏建议——先用刻意练习攒够稀缺的职场资本，再拿它去换自主权。工匠思维打败激情思维。",
+  src:"我的书架 · 待读", srcUrl:""},
+ {id:"longtail", st:0, pri:2, t:"长尾理论", en:"The Long Tail", a:"克里斯·安德森", tag:"商业 / 互联网",
+  img:"covers/longtail.jpg", douban:"https://book.douban.com/subject/11589951/",
+  blurb:"《连线》前主编 Chris Anderson 的经典：当货架无限长，需求曲线的“尾巴”加起来比头部更大。理解内容平台、电商、推荐算法生意的底层框架。",
+  src:"我的书架 · 待读", srcUrl:""},
+ {id:"five", st:0, pri:2, t:"5%的改变", en:"", a:"李松蔚", tag:"心理 / 行动",
+  img:"covers/five.jpg", douban:"https://book.douban.com/subject/35929651/",
   blurb:"“大道理没用，0.5% 的行动才有用——迈一小步、拿到正反馈、进正循环。” 课代表立正在《高手怎么用 AI》里引用的心理学思路，和这本书的核心主张一致。<div class='warn' style='margin-top:8px'>⚠️ 转写里人名被听成“李宗伟”，按内容判断应为心理咨询师李松蔚，供核对。</div>",
-  src:"十字路口 ·《高手怎么用AI》"},
- {id:"bmg", t:"商业模式新生代", en:"Business Model Generation", a:"亚历山大·奥斯特瓦德", pri:2, tag:"商业模式",
-  cover:{bg:"linear-gradient(160deg,#b45309,#d97706)", fg:"#fef3e2", orn:"▦"},
+  src:"十字路口 ·《高手怎么用AI》", srcUrl:XYZ_CROSSING},
+ {id:"bmg", st:0, pri:2, t:"商业模式新生代", en:"Business Model Generation", a:"亚历山大·奥斯特瓦德", tag:"商业模式",
+  img:"covers/bmg.jpg", douban:"https://book.douban.com/subject/26904600/",
   blurb:"“商业模式画布”九宫格的出处。Jett 在播客里反复用它压缩商业的第一问：客户分层 + 价值主张——“任何商业这两个点想不明白，后面全是扯淡。”想听懂创业者说话，先补这张画布。",
-  src:"Jett 播客 · 概念溯源"},
- {id:"meta", t:"形而上学", en:"Metaphysics", a:"亚里士多德", pri:1, tag:"哲学 / 溯源",
-  cover:{bg:"linear-gradient(160deg,#efe9dc,#e2d9c6)", fg:"#26221c", orn:"Α"},
+  src:"Jett 播客 · 概念溯源", srcUrl:""},
+ {id:"inamori", st:0, pri:2, t:"经营十二条", en:"", a:"稻盛和夫", tag:"经营 / 定价",
+  img:"covers/inamori.jpg", douban:"https://book.douban.com/subject/36420440/",
+  blurb:"“定价就是经营”的出处（第六条）。屠龙的展开：定价 = 在“消费者心理剩余”和“产业链毛利”之间做分配，而营销的全部艺术是把“心理预期 − 制造成本”的距离拉大。一罐可乐成本一毛、心理预期六块，中间才有生意。",
+  src:"屠龙访谈中引用", srcUrl:XHS_TULONG},
+ {id:"ride", st:0, pri:2, t:"一生的旅程", en:"The Ride of a Lifetime", a:"罗伯特·艾格", tag:"品牌 / 领导力",
+  img:"covers/ride.jpg", douban:"https://book.douban.com/subject/35009826/",
+  blurb:"迪士尼 15 年 CEO 自述：皮克斯 / 漫威 / 卢卡斯 / 福斯四场收购，和乔布斯的交情。屠龙拿它示范“怎么拆书”——不是复述内容，是逐段问：这段对应国内什么现象？对我有什么用？",
+  src:"屠龙 × 课代表立正", srcUrl:XHS_TULONG},
+ {id:"onchina", st:0, pri:2, t:"论中国", en:"On China", a:"亨利·基辛格", tag:"地缘 / 认知",
+  img:"covers/onchina.jpg", douban:"https://book.douban.com/subject/26607419/",
+  blurb:"她的另一本拆书范例，读法很特别：标出“哪段作者作为老外理解错了”。把书当对话对象而不是标准答案，这个读法本身比书更值得学。",
+  src:"屠龙 × 课代表立正", srcUrl:XHS_TULONG},
+ {id:"beyond", st:0, pri:1, t:"脑机穿越", en:"Beyond Boundaries", a:"米格尔·尼科莱利斯", tag:"科学",
+  img:"covers/beyond.jpg", douban:"https://book.douban.com/subject/26318103/",
+  blurb:"脑机接口先驱之作。屠龙博士毕业那年读完这本书，没投简历没约 office hour，直接冲进教授办公室说“我要干脑机接口”——一本书立刻变成行动，这个故事比书本身更有劲。",
+  src:"屠龙 × 课代表立正", srcUrl:XHS_TULONG},
+ {id:"meta", st:0, pri:1, t:"形而上学", en:"Metaphysics", a:"亚里士多德", tag:"哲学 / 溯源",
+  img:"covers/meta.jpg", douban:"https://book.douban.com/subject/1077833/",
   blurb:"“第一性原理”这个词的真正出处：认识事物最原初的依据，本身不可再被推导——数学里的公理。马斯克把它带火（电池按原材料重新算成本），创始人们把它当口头禅。不必通读，知道源头 + 电池案例即可接住话头。",
-  src:"延伸溯源 · 创始人口头禅"},
+  src:"延伸溯源 · 创始人口头禅", srcUrl:""},
+
+ /* ── 读完 ── */
+ {id:"vegetarian", st:2, t:"素食者", en:"The Vegetarian", a:"韩江", tag:"文学",
+  img:"covers/vegetarian.jpg", douban:"https://book.douban.com/subject/35534519/",
+  blurb:"2024 诺贝尔文学奖得主韩江的布克国际奖作品。英惠决定不再吃肉、决定变成一棵树——三个旁观者的视角，写一个女人对来自丈夫、家庭、社会的暴力最安静也最决绝的反抗。",
+  src:"我的书架 · 读完", srcUrl:""},
+ {id:"101", st:2, t:"改变你想法的101篇文章", en:"101 Essays That Will Change The Way You Think", a:"布里安娜·威斯特", tag:"自我认知",
+  img:"covers/101.jpg", douban:"https://book.douban.com/subject/36096771/",
+  blurb:"Brianna Wiest 的清醒短文合集：情绪不是要被解决的问题、你以为的思考多半是重播——101 篇各自独立，适合随手翻开任何一篇。",
+  src:"我的书架 · 读完", srcUrl:""},
+ {id:"happy", st:2, t:"快乐上等", en:"", a:"上野千鹤子 × 汤山玲子", tag:"女性 / 生活",
+  img:"covers/happy.jpg", douban:"https://book.douban.com/subject/36204289/",
+  blurb:"上野千鹤子和汤山玲子的对谈录：两位不按剧本生活的日本前辈，聊如何理直气壮地追求快乐、优雅又强悍地变老。",
+  src:"我的书架 · 读完", srcUrl:""},
+ {id:"yale", st:2, t:"耶鲁需要女性", en:"Yale Needs Women", a:"安妮·加德纳·珀金斯", tag:"女性 / 历史",
+  img:"covers/yale.jpg", douban:"https://book.douban.com/subject/36607517/",
+  blurb:"1969 年，耶鲁 268 年来第一次招收本科女生——这本书还原了最早那批女生如何在一所并不欢迎她们的学校里，为自己也为后来者撑开一条路。",
+  src:"我的书架 · 读完", srcUrl:""},
+ {id:"mountain", st:2, t:"翻越你的山", en:"The Mountain Is You", a:"布里安娜·威斯特", tag:"自我认知",
+  img:"covers/mountain.jpg", douban:"https://book.douban.com/subject/36492732/",
+  blurb:"Brianna Wiest 谈自我破坏（self-sabotage）：那座山不是外面的困难，是你自己——把拖延、内耗、自我设限拆开看清，然后一步步翻过去。",
+  src:"我的书架 · 读完", srcUrl:""},
 ];
 
 const PODS = [
- {name:"课代表立正 × 屠龙", tag:"访谈 · 95min", big:"屠",
+ {name:"课代表立正 × 屠龙", tag:"访谈 · 95min", big:"屠", img:"covers/pod_tulong.jpg",
   bg:"linear-gradient(135deg,#8f231d,#c0392b)",
   who:"课代表 = 康奈尔经济学博士、Superlinear Academy 创始人；屠龙 = 清华生物 → 脑科学博士 → 4 家公司创始人",
-  url:"https://www.xiaohongshu.com/explore/6a3c06d10000000022018ed5",
+  url:XHS_TULONG,
   why:"95 分钟的“知识分子下场做生意”实录：会计开法拉利、山里印盗版书、拿游标卡尺讹钱的职业黑子……但每个乱局背后都接一个可迁移的模型：非线性增长、定价即经营、人才洼地赚钱、不看竞对守 originality。",
-  eps:"<b>本页 6 本书的来源。</b>小红书可看全片。",
+  eps:"<b>书架上 6 本待读书的来源。</b>小红书可看全片。",
   books:["黑天鹅","Dataclysm","一生的旅程","论中国","脑机穿越","经营十二条"],
   quote:"“唯有一种人能成为将军：杀得一脸血一脸泥的时候，还记得兵书教你什么。”"},
- {name:"十字路口 Crossing", tag:"AI 对谈", big:"路",
+ {name:"十字路口 Crossing", tag:"AI 对谈", big:"路", img:"covers/pod_crossing.jpg",
   bg:"linear-gradient(135deg,#173a5e,#2c6aa8)",
   who:"主理人 Koji 杨远骋（真格基金 Venture Partner、AI Hacker House 发起人）",
-  url:"https://www.kojiyang.me",
+  url:XYZ_CROSSING,
   why:"把“AI 行业发生了什么”翻译成“你该怎么办”的节目，中文 AI 圈对谈天花板。招牌框架 Agency（主动性）+ Taste（品味）。《高手怎么用 AI》那期值得反复听：停掉 chat 用 agent 工具、写好 skill、真正拉开差距的是上下文的厚度。",
   eps:"入门顺序：<b>《高手怎么用AI》</b> → 2026 AI 投资观察 → 凯莉彭·制造好运 → 萌仔·识人心法。小宇宙 / B站 / YouTube 均有。",
   books:["5%的改变"],
   quote:"“学 AI 是学动词，不是学名词——模型有知识，agent 让它长出手。”"},
- {name:"Jett 蒋骧惠 · 商业课系列", tag:"商业化 · 5期", big:"商",
+ {name:"Jett 蒋骧惠 · 商业课系列", tag:"商业化 · 5期", big:"商", img:"",
   bg:"linear-gradient(135deg,#3a362f,#6b6355)",
   who:"NoumenaAI COO · 前小红书 KA 全行业负责人 · SAP/蚂蚁商业化出身",
   url:"",
@@ -257,7 +299,7 @@ const PODS = [
   eps:"最推荐先听 <b>斯斯 × 杰哥《给女孩的商业第一课》</b>——销售心法讲得最透（换位思考是销售最贵的能力；客户因恐惧和损失买单，不是因价值）。",
   books:["商业模式新生代","形而上学"],
   quote:"“先开枪后瞄准——花一点小钱，就知道业务怎么回事。”"},
- {name:"Hallway Chat", tag:"英文 · 硅谷", big:"H",
+ {name:"Hallway Chat", tag:"英文 · 硅谷", big:"H", img:"covers/pod_hallway.jpg",
   bg:"linear-gradient(135deg,#2f5d43,#4d8a68)",
   who:"Nabeel Hyatt（Spark Capital）× Fraser Kelton（前 OpenAI 产品负责人）",
   url:"",
@@ -267,30 +309,21 @@ const PODS = [
   quote:""},
 ];
 
-/* ───────── 状态 ───────── */
-const ST=["待读","在读","读完"], BC=["","b1","b2"], SC=["","s1","s2"];
-const store=k=>localStorage.getItem("bs_"+k)||"0";
-const setSt=(k,v)=>localStorage.setItem("bs_"+k,v);
-let filter=-1, curBook=null;
-
-const stars=n=>"★".repeat(n);
-
 /* ───────── 渲染 ───────── */
+const ST=["待读","在读","读完"], BC=["","b1","b2"], SC=["","s1","s2"];
+let filter=-1;
+const stars=n=>n?"★".repeat(n):"";
+
 function renderBooks(){
   document.getElementById("brow").innerHTML = BOOKS.map((b,i)=>{
-    const s=+store(b.id);
-    const dim=(filter>=0&&s!==filter)?" dim":"";
+    const dim=(filter>=0&&b.st!==filter)?" dim":"";
     return `<div class="bcard${dim}" onclick="openB(${i})">
-      <div class="cover" style="background:${b.cover.bg};color:${b.cover.fg}">
-        <div class="badge ${BC[s]}">${ST[s]}</div>
-        <div class="frame"></div>
-        <div class="orn">${b.cover.orn}</div>
-        <div class="ct serif">${b.t}</div>
-        ${b.en?`<div class="cen">${b.en}</div>`:""}
-        <div class="ca">${b.a}</div>
+      <div class="cover">
+        <div class="badge ${BC[b.st]}">${ST[b.st]}</div>
+        <img src="${b.img}" alt="《${b.t}》封面" loading="lazy" onerror="this.style.display='none'">
       </div>
       <div class="binfo">
-        <div class="t"><span>${b.t}</span><span class="pri">${stars(b.pri)}</span></div>
+        <div class="t"><span>${b.t}</span>${b.pri?`<span class="pri">${stars(b.pri)}</span>`:""}</div>
         <div class="a">${b.a} · ${b.tag}</div>
         <div class="s">${b.src}</div>
       </div>
@@ -299,17 +332,17 @@ function renderBooks(){
   renderPills();
 }
 function renderPills(){
-  const cnt=[0,0,0]; BOOKS.forEach(b=>cnt[+store(b.id)]++);
+  const cnt=[0,0,0]; BOOKS.forEach(b=>cnt[b.st]++);
   const mk=(l,i,n)=>`<div class="pill${filter===i?" on":""}" onclick="flt(${i})">${l}<b>${n}</b></div>`;
   document.getElementById("pills").innerHTML =
-    mk("全部",-1,BOOKS.length)+mk("待读",0,cnt[0])+mk("在读",1,cnt[1])+mk("读完",2,cnt[2]);
+    mk("全部",-1,BOOKS.length)+mk("在读",1,cnt[1])+mk("待读",0,cnt[0])+mk("读完",2,cnt[2]);
 }
 function renderPods(){
   document.getElementById("prow").innerHTML = PODS.map((p,i)=>`
     <div class="pcard" onclick="openP(${i})">
       <div class="ptile" style="background:${p.bg}">
+        ${p.img?`<img class="bgimg" src="${p.img}" alt="" loading="lazy" onerror="this.remove()"><div class="shade"></div>`:`<div class="big">${p.big}</div>`}
         <div class="ptag">${p.tag}</div>
-        <div class="big">${p.big}</div>
         <div class="pn">${p.name}</div>
       </div>
       <div class="pinfo">
@@ -325,22 +358,22 @@ function flt(i){ filter=(filter===i?-1:i); renderBooks(); }
 function scr(id,dir){ document.getElementById(id).scrollBy({left:dir*560,behavior:"smooth"}); }
 
 function openB(i){
-  curBook=i; const b=BOOKS[i], s=+store(b.id);
+  const b=BOOKS[i];
+  const srcLine = b.srcUrl
+    ? `出处：<a href="${b.srcUrl}" target="_blank">${b.src} ↗</a>`
+    : `出处：<b>${b.src}</b>`;
   document.getElementById("sheet").innerHTML=`
     <button class="x" onclick="closeM()">✕</button>
-    <div class="m-kick">书 · ${b.tag} · 优先级 ${stars(b.pri)}</div>
+    <div class="m-kick">书 · ${b.tag}${b.pri?` · 优先级 ${stars(b.pri)}`:""}</div>
     <div class="m-title serif">《${b.t}》</div>
     <div class="m-sub">${b.a}${b.en?` · ${b.en}`:""}</div>
     <div class="m-body">${b.blurb}</div>
     <div class="m-meta">
-      <div class="m-src">出处：<b>${b.src}</b></div>
-      <button class="stbtn ${SC[s]}" onclick="cyc()">${ST[s]} · 点击切换</button>
-    </div>`;
+      <div class="m-src">${srcLine}</div>
+      <div class="mst ${SC[b.st]}">${ST[b.st]}</div>
+    </div>
+    <a class="gobtn ghost" href="${b.douban}" target="_blank">豆瓣详情 →</a>${b.srcUrl?`<a class="gobtn" href="${b.srcUrl}" target="_blank">去看这期 →</a>`:""}`;
   showM();
-}
-function cyc(){
-  const b=BOOKS[curBook]; setSt(b.id,(+store(b.id)+1)%3);
-  openB(curBook); renderBooks();
 }
 function openP(i){
   const p=PODS[i];
